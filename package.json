@@ -1,0 +1,30 @@
+{
+  "name": "tilworth",
+  "version": "0.1.0",
+  "description": "Toolbag",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/arccoza/tilworth"
+  },
+  "keywords": [
+    "tools"
+  ],
+  "author": "Adrien de Pierres",
+  "license": "MIT",
+  "packageManager": "pnpm@9.12.3+sha512.cce0f9de9c5a7c95bef944169cc5dfe8741abfb145078c0d508b868056848a87c81e626246cb60967cbd7fd29a6c062ef73ff840d96b3c86c40ac92cf4a813ee",
+  "devDependencies": {
+    "@types/node": "^22.15.24",
+    "@vitest/coverage-v8": "^3.1.4",
+    "@vitest/ui": "^3.1.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
+  }
+}
