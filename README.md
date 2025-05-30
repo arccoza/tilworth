@@ -33,9 +33,16 @@ npm install tilworth
       - [`allOf<T extends readonly unknown[] | []>(...values: T)`](#alloft-extends-readonly-unknown--values-t)
       - [`eachOf<T extends readonly unknown[] | []>(...values: T)`](#eachoft-extends-readonly-unknown--values-t)
       - [`tryMe<T, Args extends readonly unknown[]>(callback: (...args: Args) => (T | Promise<T>), ...args: Args)`](#trymet-args-extends-readonly-unknowncallback-args-args--t--promiset-args-args)
-    - [Base64 Utilities](#base64-utilities)
-      - [`base64.encode(buf: ArrayBuffer, urlSafe?: boolean)`](#base64encodebuf-arraybuffer-urlsafe-boolean)
-      - [`base64.decode(base64: string, urlSafe?: boolean)`](#base64decodebase64-string-urlsafe-boolean)
+    - [Transcoders](#transcoders)
+      - [Base64 Utilities](#base64-utilities)
+        - [`base64.encode(buf: ArrayBuffer, urlSafe?: boolean)`](#base64encodebuf-arraybuffer-urlsafe-boolean)
+        - [`base64.decode(base64: string, urlSafe?: boolean)`](#base64decodebase64-string-urlsafe-boolean)
+      - [Hex Utilities](#hex-utilities)
+        - [`hex.encode(buf: ArrayBuffer)`](#hexencodebuf-arraybuffer)
+        - [`hex.decode(hex: string)`](#hexdecodehex-string)
+      - [UTF-8 Utilities](#utf-8-utilities)
+        - [`utf8.encode(text: string)`](#utf8encodetext-string)
+        - [`utf8.decode(buf: ArrayBuffer)`](#utf8decodebuf-arraybuffer)
   - [License](#license)
 
 ## API Reference
@@ -227,10 +234,12 @@ const result3 = await tryMe(async () => 42)
 // result3 is 42
 ```
 
-### Base64 Utilities
+### Transcoders
 
-#### `base64.encode(buf: ArrayBuffer, urlSafe?: boolean)`
-Encodes an ArrayBuffer to a base64 string.
+#### Base64 Utilities
+
+##### `base64.encode(buf: ArrayBuffer, urlSafe?: boolean)`
+Encodes an ArrayBuffer to a base64 string. Optionally converts the output to URL-safe base64 format.
 
 ```typescript
 import { base64 } from 'tilworth'
@@ -244,8 +253,8 @@ const urlSafe = base64.encode(buf, true)
 // urlSafe is "AQID" with URL-safe characters
 ```
 
-#### `base64.decode(base64: string, urlSafe?: boolean)`
-Decodes a base64 string to a Uint8Array.
+##### `base64.decode(base64: string, urlSafe?: boolean)`
+Decodes a base64 string to a Uint8Array. Handles both standard and URL-safe base64 formats.
 
 ```typescript
 import { base64 } from 'tilworth'
@@ -256,6 +265,51 @@ const decoded = base64.decode('AQID')
 // URL-safe decoding
 const decoded2 = base64.decode('AQID', true)
 // decoded2 is a Uint8Array([1, 2, 3])
+```
+
+#### Hex Utilities
+
+##### `hex.encode(buf: ArrayBuffer)`
+Encodes an ArrayBuffer to a hexadecimal string. Each byte is converted to a two-character hex string, padded with leading zeros if necessary.
+
+```typescript
+import { hex } from 'tilworth'
+
+const buf = new Uint8Array([1, 2, 3]).buffer
+const encoded = hex.encode(buf)
+// encoded is "010203"
+```
+
+##### `hex.decode(hex: string)`
+Decodes a hexadecimal string to a Uint8Array. Handles odd-length strings by padding with a leading zero.
+
+```typescript
+import { hex } from 'tilworth'
+
+const decoded = hex.decode("010203")
+// decoded is Uint8Array([1, 2, 3])
+```
+
+#### UTF-8 Utilities
+
+##### `utf8.encode(text: string)`
+Encodes a string to UTF-8 bytes.
+
+```typescript
+import { utf8 } from 'tilworth'
+
+const encoded = utf8.encode("Hello")
+// encoded is Uint8Array([72, 101, 108, 108, 111])
+```
+
+##### `utf8.decode(buf: ArrayBuffer)`
+Decodes UTF-8 bytes to a string.
+
+```typescript
+import { utf8 } from 'tilworth'
+
+const decoded = utf8.decode(new Uint8Array([72, 101, 108, 108, 111]).buffer)
+// decoded is "Hello"
 ```
 
 ## License
