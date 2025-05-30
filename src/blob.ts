@@ -23,7 +23,7 @@ export const blob = {
       throw new Error("Invalid data URL")
     }
 
-    const [prefix, payload] = dataUrl.split(",", 2)
+    const [prefix, payload] = dataUrl.slice(5).split(",", 2)
     const [type, encoding] = prefix.split(";", 2)
 
     if (encoding !== "base64") {
