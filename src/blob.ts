@@ -1,17 +1,16 @@
+import { base64, hex } from "./transcoders"
+
+
 export const blob = {
-  async toDataUrl(blob: Blob, reader?: FileReader) {
-    const r = reader ?? new FileReader()
-
-    const p = new Promise<string>((res, rej) => {
-      r.onloadend = () => res(r.result as string)
-      r.onerror = (err) => rej(err)
-    })
-
-    r.readAsDataURL(blob)
-    return p
+  async toDataUrl(blob: Blob) {
+    return `data:${blob.type};base64,${this.toBase64(blob)}`
   },
 
-  async toBase64(blob: Blob, reader?: FileReader) {
-    return this.toDataUrl(blob, reader).then((dataURL) => dataURL.split(",")[1])
+  async toBase64(blob: Blob, urlSafe=false) {
+    return base64.encode(await blob.arrayBuffer(), urlSafe)
+  },
+
+  async toHex(blob: Blob) {
+    return hex.encode(await blob.arrayBuffer())
   },
 }
