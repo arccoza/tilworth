@@ -13,6 +13,12 @@ export type TypedArrays =
 
 
 export const buffer = {
+  /**
+   * Concatenates multiple typed arrays into a single new typed array of the same type.
+   * @template T - The type of the input and output typed arrays
+   * @param {...T[]} bufs - The typed arrays to concatenate
+   * @returns {T | undefined} A new typed array containing the concatenated data, or undefined if no arrays were provided
+   */
   concat<T extends TypedArrays>(...bufs: T[]) {
     if (bufs.length === 0) {
       return
@@ -31,6 +37,12 @@ export const buffer = {
     return new Constructor(merged.buffer)
   },
 
+  /**
+   * Pads a Uint8Array with `len` zeros.
+   * @param {Uint8Array} buf - The buffer to pad
+   * @param {number} len - The length of the padding
+   * @returns {Uint8Array} A new padded buffer
+   */
   pad(buf: Uint8Array, len: number) {
     const offset = 2 + len
     const padded = new Uint8Array(offset + buf.length)
@@ -41,6 +53,11 @@ export const buffer = {
     return padded
   },
 
+  /**
+   * Pads a Uint8Array with a random number of zeros.
+   * @param {Uint8Array} buf - The buffer to pad
+   * @returns {Uint8Array} A new padded buffer with random length
+   */
   padRand(buf: Uint8Array) {
     const lenBuf = crypto.getRandomValues(new Uint8Array(1))
     const dv = new DataView(lenBuf.buffer)
