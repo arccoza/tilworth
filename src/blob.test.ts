@@ -106,15 +106,15 @@ describe("blob", () => {
     })
 
     it("should handle URL-safe encoding when requested", async () => {
-      // Create data that will result in + and / characters in standard base64
-      const binaryData = new Uint8Array([62, 63, 64]) // Will produce "+/A=" in standard base64
+      // Create data that will not result in +, /, or = characters in standard base64
+      const binaryData = new Uint8Array([62, 63, 64]) // Will produce "Pj9A" in standard and safe base64
       const testBlob = createBinaryBlob(binaryData)
 
       const standardResult = await blob.toBase64(testBlob, false)
       const urlSafeResult = await blob.toBase64(testBlob, true)
 
       expect(standardResult).toBe("Pj9A")
-      expect(urlSafeResult).toBe("Pj9A") // This particular data doesn't have + or /
+      expect(urlSafeResult).toBe("Pj9A") // This particular data doesn't have +, /, or =
 
       // Test with data that definitely produces + and /
       const specialData = new Uint8Array([248, 255, 254]) // Will produce "+P/+" in standard base64
