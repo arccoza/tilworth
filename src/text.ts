@@ -42,6 +42,67 @@ export const $text = {
   },
 }
 
+export const $hex = {
+  /**
+   * Encodes an ArrayBuffer to a hexadecimal string.
+   * Each byte is converted to a two-character hex string, padded with leading zeros if necessary.
+   *
+   * @param buf - The buffer to encode
+   * @returns A hexadecimal string representation of the buffer
+   * @example
+   * hex.encode(new Uint8Array([1, 2, 3]).buffer) // returns "010203"
+   */
+  fromBuffer(buf: ArrayBuffer) {
+    const bytes = new Uint8Array(buf)
+    return Array.prototype.map.call(bytes, (b) => b.toString(16).padStart(2, "0")).join("")
+  },
+
+  /**
+   * Decodes a hexadecimal string to a Uint8Array.
+   * Handles odd-length strings by padding with a leading zero.
+   *
+   * @param hex - The hexadecimal string to decode
+   * @returns A Uint8Array containing the decoded bytes
+   * @example
+   * hex.decode("010203") // returns Uint8Array([1, 2, 3])
+   */
+  toBuffer(hex: string) {
+    hex = hex.length % 2 ? hex.padStart(hex.length + 1, "0") : hex
+    const size = hex.length / 2
+    const bytes = new Uint8Array(size)
+
+    for (let i = 0; i < size; i++) {
+      bytes[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16)
+    }
+
+    return bytes
+  },
+
+  /**
+   * Decodes a hexadecimal string to a Uint8Array and writes them into a destination buffer.
+   * Handles odd-length strings by padding with a leading zero.
+   *
+   * @param hex - The hexadecimal string to decode
+   * @param dest - The destination buffer to write the decoded bytes into
+   * @returns An object with the properties `read` and `written`
+   * @example
+   * const dest = new Uint8Array(10)
+   * hex.intoBuffer("010203", dest) // returns { read: 3, written: 3 }
+   * console.log(dest.subarray(0, 3)) // prints [1, 2, 3]
+   */
+  intoBuffer(hex: string, dest: Uint8Array): { read: number, written: number } {
+    hex = hex.length % 2 ? hex.padStart(hex.length + 1, "0") : hex
+    const size = hex.length / 2
+    const written = Math.min(dest.byteLength, size)
+
+    for (let i = 0; i < written; i++) {
+      dest[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16)
+    }
+
+    return { read: size, written }
+  },
+}
+
 export const $base64 = {
   /**
    * Encodes an ArrayBuffer to a base64 string.
