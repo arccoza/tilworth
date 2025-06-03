@@ -12,7 +12,7 @@ export type TypedArrays =
   | BigUint64Array
 
 
-export const buffer = {
+export const $buffer = {
   /**
    * Concatenates multiple typed arrays into a single new typed array of the same type.
    * @param bufs - The typed arrays to concatenate
